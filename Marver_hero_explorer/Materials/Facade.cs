@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -65,6 +66,26 @@ namespace Marver_hero_explorer.Materials
             
             var result = (CharacterDataWrapper)serializer.ReadObject(MS);
             return result;
+        }
+
+        public static async Task PopulateMarvelCharactersAsync(ObservableCollection<Character> MarvelCharacters)
+        {
+            var characterDataWrapper = await GetCharacterDataWrapperAsync();
+            var characters = characterDataWrapper.data.results;
+
+            foreach (var character in characters)
+            {
+                //Filter characters that are missing thumbnail images
+                if (character.thumbnail != null
+                    && character.thumbnail.path != ""
+                    && character.thumbnail.path != ImageNotAvailablePath)
+                {
+                    character.thumbnail.small = string.Format("{0}/standart_small.{1}", character.thumbnail.path, character.thumbnail.extension);
+                    character.thumbnail.large = string.Format("{0}/portrait_xlarge.{1}", character.thumbnail.path, character.thumbnail.extension);
+                    MarvelCharacters.Add(character);
+                }
+
+            }
         }
     }
 }
