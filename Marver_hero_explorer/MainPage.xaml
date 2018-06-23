@@ -10,41 +10,37 @@
     Loaded="Page_Loaded">
 
     <Grid>
-        <Grid.RowDefinitions>
+       <Grid.RowDefinitions>
            <RowDefinition Height="*"/>
-           <RowDefinition Height="Auto"/>
+           <RowDefinition Height="auto"/>
            <RowDefinition Height="30"/>
-        </Grid.RowDefinitions>
+       </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-           <ColumnDefinition Width="150"/>
+       <Grid.ColumnDefinitions>
+           <ColumnDefinition Width="auto"/>
            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+       </Grid.ColumnDefinitions>
 
-        <ListView Name=" MasterListView" ItemsSource="{x:Bind MarvelCharacters}">
+        <ListView Name="MasterList" ItemsSource="{x:Bind MarvelCharacters}">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="data:Character">
-                    <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
-                        <Ellipse Height="45"  Width="45" >
+                <DataTemplate x:DataType="data:Character" >
+                    <StackPanel Orientation="Horizontal" >
+                        <Ellipse Width=" 45" Height=" 45">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind thumbnail.small}" />
+                                <ImageBrush ImageSource="{x:Bind thumbnail.small }"/>
                             </Ellipse.Fill>
                         </Ellipse>
-                        <TextBlock Text="{x:Bind name}"
-                                   VerticalAlignment="Center"
-                                   Margin="5,0,0,0"
-                                   FontSize="18">
-                        </TextBlock>
+                        <TextBlock Text="{x:Bind name }"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <!--<Grid Name="Detail" Grid.Column="1" Grid.Row="0" />
+        <Grid Name="Detail" Grid.Column="1" Grid.Row="0">
 
-        </Grid>-->
+        </Grid>
 
-        <TextBlock Text="Data provided by Marvel. © 2018 MARVEL"
+        <TextBlock Text="Attibutton"
                        Grid.Column="1" Grid.Row="2"
                    VerticalAlignment="Center" HorizontalAlignment="Center">
         </TextBlock>
@@ -58,22 +54,3 @@
         
     </Grid>
 </Page>
-
-
-<!--<ListView Name="MasterListView" ItemsSource="{x:Bind MarvelCharacters}">
-    <ListView.ItemTemplate>
-        <DataTemplate x:DataType="data:Character">
-            <StackPanel Orientation="Horizontal" Margin="10,5,0,5">
-                <Ellipse Width="45" Height="45">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind thumbnail.small}" />
-                    </Ellipse.Fill>
-                </Ellipse>
-                <TextBlock Text="{x:Bind name}"
-                                   VerticalAlignment="Center"
-                                   Margin="10,0,0,0"
-                                   FontSize="18" />
-            </StackPanel>
-        </DataTemplate>
-    </ListView.ItemTemplate>
-</ListView>-->
