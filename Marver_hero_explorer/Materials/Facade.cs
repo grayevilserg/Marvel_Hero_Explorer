@@ -43,7 +43,7 @@ namespace Marver_hero_explorer.Materials
         {
             var TimeStamp = DateTime.Now.Ticks.ToString();
             Random Rand = new Random();
-            var Offset = 10;//Rand.Next(1, MaxChars);
+            var Offset = Rand.Next(1, MaxChars);
 
             //Get MD5 hash
 
@@ -51,7 +51,7 @@ namespace Marver_hero_explorer.Materials
 
             //Creating url
 
-            string Url = string.Format("https://gateway.marvel.com/v1/public/characters?limit=1&offset={0}&ts={1}&apikey={2}&hash={3}", Offset, TimeStamp, PublicKey, Hash);
+            string Url = string.Format("https://gateway.marvel.com/v1/public/characters?limit=10&offset={0}&ts={1}&apikey={2}&hash={3}", Offset, TimeStamp, PublicKey, Hash);
             
             //Call to Marvel side, creation josn object
 
@@ -78,7 +78,7 @@ namespace Marver_hero_explorer.Materials
                 //Filter characters that are missing thumbnail images
                 if (character.thumbnail != null && character.thumbnail.path != "" && character.thumbnail.path != ImageNotAvailablePath)
                 {
-                    character.thumbnail.small = string.Format("{0}/standart_small.{1}", character.thumbnail.path, character.thumbnail.extension);
+                    character.thumbnail.small = string.Format("{0}/standard_small.{1}", character.thumbnail.path, character.thumbnail.extension);
                     character.thumbnail.large = string.Format("{0}/portrait_xlarge.{1}", character.thumbnail.path, character.thumbnail.extension);
                     MarvelCharacters.Add(character);
                 }

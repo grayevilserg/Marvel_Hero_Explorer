@@ -21,7 +21,10 @@
            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ListView Name=" MasterListView" ItemsSource="{x:Bind MarvelCharacters}">
+        <ListView Name=" MasterListView" 
+                  ItemsSource="{x:Bind MarvelCharacters}"
+                  IsItemClickEnabled="True" 
+                  ItemClick="ItemClick">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Character">
                     <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
@@ -30,6 +33,7 @@
                                 <ImageBrush ImageSource="{x:Bind thumbnail.small}" />
                             </Ellipse.Fill>
                         </Ellipse>
+                        
                         <TextBlock Text="{x:Bind name}"
                                    VerticalAlignment="Center"
                                    Margin="5,0,0,0"
@@ -40,9 +44,35 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <!--<Grid Name="Detail" Grid.Column="1" Grid.Row="0" />
+        <Grid Name="DetailGrid" Grid.Column="1" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        </Grid>-->
+            <Grid Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Name="DetailImage" 
+                       Grid.Column="0" Grid.RowSpan="2" />
+                
+                <TextBlock Name="DetailTextBlock" 
+                           Grid.Column="1" />
+                
+                <TextBlock Name="DescriptionTextBlock" 
+                           Grid.Column="1" Grid.Row="1" 
+                           TextWrapping="Wrap" />
+            </Grid>
+        </Grid>
 
         <TextBlock Text="Data provided by Marvel. © 2018 MARVEL"
                        Grid.Column="1" Grid.Row="2"
