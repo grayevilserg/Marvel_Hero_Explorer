@@ -27,12 +27,14 @@ namespace Marver_hero_explorer
     public sealed partial class MainPage : Page
     {
         public ObservableCollection<Character> MarvelCharacters{ get; set;}
+        public ObservableCollection<ComicBook> MarvelComics { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
 
             MarvelCharacters = new ObservableCollection<Character>();
+            MarvelComics = new ObservableCollection<ComicBook>();
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -51,8 +53,12 @@ namespace Marver_hero_explorer
             MyRing.Visibility = Visibility.Collapsed;
         }
 
-        private void ItemClick(object sender, ItemClickEventArgs e)
+        private async void ItemClick(object sender, ItemClickEventArgs e)
         {
+
+            MyRing.IsActive = true;
+            MyRing.Visibility = Visibility.Visible;
+
             var SelectedCharacter = (Character)e.ClickedItem;
 
             NameTextBlock.Text = SelectedCharacter.name;
@@ -62,6 +68,19 @@ namespace Marver_hero_explorer
             Uri uri = new Uri(SelectedCharacter.thumbnail.large, UriKind.Absolute);
             LargeImage.UriSource = uri;
             DetailImage.Source = LargeImage;
+
+            MarvelComics.Clear();
+
+            await Facade.PopulateMarvelComicsAsync(SelectedCharacter.id, MarvelComics);
+
+            MyRing.IsActive = false;
+            MyRing.Visibility = Visibility.Collapsed;
+
+        }
+
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
         }
     }
 }

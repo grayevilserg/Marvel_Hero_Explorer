@@ -41,30 +41,35 @@ namespace Marver_hero_explorer.Materials
 
         private static async Task<CharacterDataWrapper> GetCharacterDataWrapperAsync()
         {
-            var TimeStamp = DateTime.Now.Ticks.ToString();
             Random Rand = new Random();
             var Offset = Rand.Next(1, MaxChars);
 
-            //Get MD5 hash
+            string Url = string.Format("https://gateway.marvel.com/v1/public/characters?limit=10&offset={0}", Offset);
 
-            var Hash = CreateHash(TimeStamp);
-
-            //Creating url
-
-            string Url = string.Format("https://gateway.marvel.com/v1/public/characters?limit=10&offset={0}&ts={1}&apikey={2}&hash={3}", Offset, TimeStamp, PublicKey, Hash);
-            
-            //Call to Marvel side, creation josn object
-
-            HttpClient Http = new HttpClient();
-            var Response = await Http.GetAsync(Url);
-            var JsonMessage = await Response.Content.ReadAsStringAsync();
+            var JsonMessage = await CallMarvelAsync(Url);
 
             //Deserialize
 
             var serializer = new DataContractJsonSerializer(typeof(CharacterDataWrapper));
             var MS = new MemoryStream(Encoding.UTF8.GetBytes(JsonMessage));
-            
+
             var result = (CharacterDataWrapper)serializer.ReadObject(MS);
+            return result;
+        }
+
+        private static async Task<ComicDataWrapper> GetComicDataWrapperAsync(int characterID)
+        {
+            string Url = string.Format("https://gateway.marvel.com:443/v1/public/comics?characters={0}&limit=10",
+                   characterID);
+
+            var JsonMessage = await CallMarvelAsync(Url);
+
+            //Deserialize
+
+            var serializer = new DataContractJsonSerializer(typeof(ComicDataWrapper));
+            var MS = new MemoryStream(Encoding.UTF8.GetBytes(JsonMessage));
+
+            var result = (ComicDataWrapper)serializer.ReadObject(MS);
             return result;
         }
 
@@ -90,6 +95,45 @@ namespace Marver_hero_explorer.Materials
             {
                 return;
             }
+        }
+
+        public static async Task PopulateMarvelComicsAsync(int characterID, ObservableCollection<ComicBook> MarvelComics)
+        {
+            try
+            {
+                var ComicDataWrapper = await GetComicDataWrapperAsync(characterID);
+                var Comics = ComicDataWrapper.data.results;
+
+                foreach (var comic in Comics)
+                {
+                    //Filter characters that are missing thumbnail images
+                    if (comic.thumbnail != null && comic.thumbnail.path != "" && comic.thumbnail.path != ImageNotAvailablePath)
+                    {
+                        comic.thumbnail.small = string.Format("{0}/portrait_medium.{1}", comic.thumbnail.path, comic.thumbnail.extension);
+                        comic.thumbnail.large = string.Format("{0}/portrait_xlarge.{1}", comic.thumbnail.path, comic.thumbnail.extension);
+                        MarvelComics.Add(comic);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
+        private static async Task<string> CallMarvelAsync(string url)
+        {
+            //Get MD5 hash
+            var TimeStamp = DateTime.Now.Ticks.ToString();
+            var Hash = CreateHash(TimeStamp);
+
+            string CompleteUrl = string.Format("{0}&apikey={1}&ts={2}&hash={3}", url, PublicKey, TimeStamp, Hash);
+
+            //Call to Marvel side, creation josn object
+
+            HttpClient Http = new HttpClient();
+            var Response = await Http.GetAsync(CompleteUrl);
+            return await Response.Content.ReadAsStringAsync();
         }
     }
 }
