@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Media.Imaging;
+using System.Threading.Tasks;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
 
@@ -39,7 +40,12 @@ namespace Marver_hero_explorer
             MyRing.IsActive = true;
             MyRing.Visibility = Visibility.Visible;
 
-            await Facade.PopulateMarvelCharactersAsync(MarvelCharacters);
+            while (MarvelCharacters.Count < 10)
+            {
+                Task t = Facade.PopulateMarvelCharactersAsync(MarvelCharacters);
+                await t;
+            }
+            
 
             MyRing.IsActive = false;
             MyRing.Visibility = Visibility.Collapsed;
@@ -49,7 +55,7 @@ namespace Marver_hero_explorer
         {
             var SelectedCharacter = (Character)e.ClickedItem;
 
-            DetailTextBlock.Text = SelectedCharacter.name;
+            NameTextBlock.Text = SelectedCharacter.name;
             DescriptionTextBlock.Text = SelectedCharacter.description;
 
             var LargeImage = new BitmapImage();
