@@ -59,11 +59,6 @@ namespace Marver_hero_explorer
             MyRing.IsActive = true;
             MyRing.Visibility = Visibility.Visible;
 
-            ComicDetailImage.Source = null;
-            ComicNameTextBlock.Text = "";
-            ComicDescriptionTextBlock.Text = "";
-
-
             var SelectedCharacter = (Character)e.ClickedItem;
 
             NameTextBlock.Text = SelectedCharacter.name;
@@ -83,19 +78,9 @@ namespace Marver_hero_explorer
 
         }
 
-        private void ComicsGridView_ItemClick(object sender, ItemClickEventArgs e)
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var SelectedComic = (ComicBook)e.ClickedItem;
 
-            ComicNameTextBlock.Text = SelectedComic.title;
-            if (SelectedComic.description != null)
-            ComicDescriptionTextBlock.Text = SelectedComic.description;
-
-            var LargeImage = new BitmapImage();
-            Uri uri = new Uri(SelectedComic.thumbnail.large, UriKind.Absolute);
-            LargeImage.UriSource = uri;
-            DetailImage.Source = LargeImage;
-            
         }
     }
 }
