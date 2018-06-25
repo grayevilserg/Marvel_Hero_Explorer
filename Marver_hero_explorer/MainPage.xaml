@@ -10,116 +10,139 @@
     Loaded="Page_Loaded">
 
     <Grid>
-        <Grid.RowDefinitions>
-           <RowDefinition Height="*"/>
-           <RowDefinition Height="Auto"/>
-           <RowDefinition Height="30"/>
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-           <ColumnDefinition Width="Auto"/>
-           <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <ListView Name=" MasterListView" 
-                  ItemsSource="{x:Bind MarvelCharacters}"
-                  IsItemClickEnabled="True" 
-                  ItemClick="ItemClick">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="data:Character">
-                    <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
-                        <Ellipse Height="45"  Width="45" >
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="{x:Bind thumbnail.small}" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                        
-                        <TextBlock Text="{x:Bind name}"
-                                   VerticalAlignment="Center"
-                                   Margin="5,0,0,0"
-                                   FontSize="18">
-                        </TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-        <Grid Name="DetailGrid" 
-              Grid.Column="1" Grid.Row="0"
-              Margin="10,0,10,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Grid.RowDefinitions >
-                    <RowDefinition Height="Auto"/>
+        <ScrollViewer>
+            <Grid>
+                <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Image Name="DetailImage" 
+                <!--List of Characters-->
+
+                <ListView Name=" MasterListView" 
+                  ItemsSource="{x:Bind MarvelCharacters}"
+                  IsItemClickEnabled="True" 
+                  ItemClick="ItemClick">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="data:Character">
+                            <StackPanel Orientation="Horizontal" Margin="5,5,0,5">
+                                <Ellipse Height="45"  Width="45" >
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{x:Bind thumbnail.small}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+
+                                <TextBlock Text="{x:Bind name}"
+                                   VerticalAlignment="Center"
+                                   Margin="5,0,0,0"
+                                   FontSize="18">
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!--Detailed information about character -->
+
+                <Grid Name="DetailGrid" 
+              Grid.Column="1" Grid.Row="0"
+              Margin="5,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid.RowDefinitions >
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Name="DetailImage" 
                        Grid.Column="0" Grid.RowSpan="2" />
-                
-                <TextBlock Name="NameTextBlock" 
+
+                        <TextBlock Name="NameTextBlock" 
                            Grid.Column="1" 
                            FontSize="26"
-                           Margin="10,0,0,0"/>
-                
-                <TextBlock Name="DescriptionTextBlock" 
+                           Margin="5,0,0,0"/>
+
+                        <TextBlock Name="DescriptionTextBlock" 
                            Grid.Column="1" Grid.Row="1" 
                            TextWrapping="Wrap" 
-                           Margin="10,0,0,0" />
-            </Grid>
-            <GridView Grid.Row="1" ItemsSource="{x:Bind MarvelComics}" 
-                      IsItemClickEnabled="True"
-                      ItemClick="GridView_ItemClick">
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="data:ComicBook">
-                        <Image Source="{x:Bind thumbnail.small}" 
-                               Height=" 150" Width="100" />
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-                
-            </GridView>
-        </Grid>
+                           Margin="5,0,0,0" />
+                    </Grid>
 
-        <TextBlock Text="Data provided by Marvel. © 2018 MARVEL"
+                    <!--List comics of character-->
+
+                    <GridView Name="ComicsGridView"
+                      Grid.Row="1" ItemsSource="{x:Bind MarvelComics}" 
+                      IsItemClickEnabled="True"
+                      ItemClick="ComicsGridView_ItemClick">
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="data:ComicBook">
+                                <Image Source="{x:Bind thumbnail.small}" 
+                               Height=" 150" Width="100" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+
+                    <!--Detail information about comic -->
+
+                    <Grid Grid.Row="2"
+                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid.RowDefinitions >
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Name="ComicDetailImage" 
+                       Grid.Column="0" Grid.RowSpan="2" />
+
+                        <TextBlock Name="ComicNameTextBlock" 
+                           Grid.Column="1" 
+                           FontSize="26"
+                           Margin="5,0,0,0"/>
+
+                        <TextBlock Name="ComicDescriptionTextBlock" 
+                           Grid.Column="1" Grid.Row="1" 
+                           TextWrapping="Wrap" 
+                           Margin="5,0,0,0" />
+                    </Grid>
+
+                </Grid>
+
+                <TextBlock Text="Data provided by Marvel. © 2018 MARVEL"
                        Grid.Column="1" Grid.Row="2"
                    VerticalAlignment="Center" HorizontalAlignment="Center">
-        </TextBlock>
+                </TextBlock>
 
-        <ProgressRing Name="MyRing" 
+                <ProgressRing Name="MyRing" 
                       Width="100" Height="100"
                       Foreground="DarkGray"
                       Grid.ColumnSpan="2" Grid.RowSpan="3"
                       VerticalAlignment="Center" HorizontalAlignment="Center">
-        </ProgressRing>
-        
+                </ProgressRing>
+
+            </Grid>
+        </ScrollViewer>
     </Grid>
+    
+    
 </Page>
 
 
-<!--<ListView Name="MasterListView" ItemsSource="{x:Bind MarvelCharacters}">
-    <ListView.ItemTemplate>
-        <DataTemplate x:DataType="data:Character">
-            <StackPanel Orientation="Horizontal" Margin="10,5,0,5">
-                <Ellipse Width="45" Height="45">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="{x:Bind thumbnail.small}" />
-                    </Ellipse.Fill>
-                </Ellipse>
-                <TextBlock Text="{x:Bind name}"
-                                   VerticalAlignment="Center"
-                                   Margin="10,0,0,0"
-                                   FontSize="18" />
-            </StackPanel>
-        </DataTemplate>
-    </ListView.ItemTemplate>
-</ListView>-->
